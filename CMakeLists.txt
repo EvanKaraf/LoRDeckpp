@@ -4,4 +4,4 @@ project(LoRDeck__)
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(cppcodec)
-add_executable(LoRDeck__ main.cpp utils.cpp utils.h LoRDeck.cpp LoRDeck.h LoRCard.cpp LoRCard.h)
+add_executable(LoRDeck__ src/main.cpp src/utils.cpp include/utils.h src/LoRDeck.cpp include/LoRDeck.h src/LoRCard.cpp include/LoRCard.h)

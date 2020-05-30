@@ -1,6 +1,6 @@
 #include <iostream>
-#include "LoRCard.h"
-#include "LoRDeck.h"
+#include "../include/LoRCard.h"
+#include "../include/LoRDeck.h"
 
 using namespace std;
 int main() {
@@ -23,17 +23,3 @@ int main() {
 
     return 0;
 }
-//3:01SI015
-//3:01SI044
-//3:01SI048
-//3:01SI054
-//3:01FR003
-//3:01FR012
-//3:01FR020
-//3:01FR024
-//3:01FR033
-//3:01FR036
-//3:01FR039
-//3:01FR052
-//2:01SI005
-//2:01FR004

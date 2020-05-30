@@ -1,8 +1,8 @@
 #include <algorithm>
 #include <set>
 #include <iostream>
-#include "LoRDeck.h"
-#include "cppcodec/base32_rfc4648.hpp"
+#include "../include/LoRDeck.h"
+#include "base32_rfc4648.hpp"
 
 using namespace std;
 bool LoRDeck::add_cards(const LoRCard &card, int amount) {

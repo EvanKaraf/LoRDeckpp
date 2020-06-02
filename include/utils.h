@@ -1,6 +1,12 @@
 #ifndef LORDECK_UTILS_H
 #define LORDECK_UTILS_H
 
+#include <cstdint>
+
+const int FORMAT = 1;
+const int VERSION = 1;
+
+const int FORMAT_VERSION = (FORMAT << 4) | VERSION;
 
 #include <string>
 #include <vector>
@@ -20,10 +26,12 @@ enum class LoRFaction {
 const std::vector<std::pair<std::string, LoRFaction>> mappings{{"DE", LoRFaction::Demacia},
                                                                {"FR", LoRFaction::Freljord},
                                                                {"IO", LoRFaction::Ionia},
-                                                               {"NO", LoRFaction::Noxus},
+                                                               {"NX", LoRFaction::Noxus},
                                                                {"PZ", LoRFaction::Piltover_Zaun},
                                                                {"SI", LoRFaction::Shadow_Isles},
                                                                {"BW", LoRFaction::Bilgewater}};
+
+std::string factionToString(const LoRFaction& faction);
 
 
 LoRFaction toFaction(const std::string& s);
@@ -31,5 +39,7 @@ LoRFaction toFaction(const std::string& s);
 int factionToInt(LoRFaction faction);
 
 int writeVarint(std::string* buffer, uint64_t value);
+
+int getNextVarInt(std::vector <uint8_t>* stream);
 
 #endif //LORDECK_UTILS_H

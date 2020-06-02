@@ -21,5 +21,11 @@ int main() {
     deck.add_cards({"01FR004"}, 2);
     cout << deck.encode() << endl;
 
+    auto cards = LoRDeck::decode(deck.encode());
+
+    for (const auto& card : cards) {
+        cout << card.getFullCode() << endl;
+    }
+
     return 0;
 }

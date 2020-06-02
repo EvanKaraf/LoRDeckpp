@@ -22,3 +22,16 @@ const std::string& LoRCard::getSet() const {
 const std::string& LoRCard::getFullCode() const {
     return fullCode;
 }
+
+LoRCard::LoRCard(const std::string& set, const std::string& faction, const std::string& cardCode) {
+    this->set = set;
+    if (this->set.size() < 2){
+        this->set.insert(this->set.begin(), 2 - this->set.size(), '0');
+    }
+    this->faction = toFaction(faction);
+    this->cardCode = cardCode;
+    if (this->cardCode.size() < 3) {
+        this->cardCode.insert(this->cardCode.begin(), 3 - this->cardCode.size(), '0');
+    }
+    this->fullCode = this->set + faction + this->cardCode;
+}

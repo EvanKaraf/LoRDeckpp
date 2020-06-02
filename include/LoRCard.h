@@ -14,6 +14,8 @@ private:
 public:
     LoRCard(const std::string& cardCode);
 
+    LoRCard(const std::string& set, const std::string& faction, const std::string& cardCode);
+
     const std::string& getCardCode() const;
 
     LoRFaction getFaction() const;

@@ -1,6 +1,6 @@
 # LoRDeck++
 
-This project is a C++ implementation of [Riot's Deck API](google.com) for Legends of Runeterra.
+A C++ implementation of [Riot's Deck API](https://github.com/RiotGames/LoRDeckCodes) for Legends of Runeterra.
 
 ## Installation && Tests
 

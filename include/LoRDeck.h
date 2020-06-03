@@ -9,7 +9,7 @@ typedef std::pair<std::string, LoRFaction> SetFaction;
 
 class LoRDeck {
     std::vector<LoRCardAndCount> deck;
-
+    const int format_version;
     static std::vector<LoRCard> decode_group(std::vector<uint8_t>* card_stream, int group_amount);
 
     std::string encode_group(const std::vector<LoRCardAndCount>& cards);
@@ -19,6 +19,8 @@ class LoRDeck {
     std::pair< std::vector<SetFaction>, std::vector<std::vector<LoRCard>> >
     getProcessedGroups(const std::vector<LoRCardAndCount>& cards) const;
 public:
+    LoRDeck(int version = VERSION);
+
     bool add_cards(const LoRCard &card, int amount);
     std::string encode();
     static std::vector<LoRCard> decode(const std::string& encoded_deck);

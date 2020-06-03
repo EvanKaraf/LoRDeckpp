@@ -18,7 +18,7 @@ TEST(TestReadyDecks, ReadFromFile ) {
 
     while (std::getline(test_file, line)) {
         codeDecks.emplace_back(line);
-        LoRDeck deck;
+        LoRDeck deck(1);
         while (getline(test_file, line)) {
             if (line.empty()) break;
             int amount;

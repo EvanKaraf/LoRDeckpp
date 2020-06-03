@@ -6,6 +6,8 @@
 
 using namespace std;
 
+LoRDeck::LoRDeck(int version) : format_version((FORMAT << 4) | version)  {}
+
 bool LoRDeck::add_cards(const LoRCard &card, int amount) {
     if (amount > 3)
         return false;
@@ -14,9 +16,7 @@ bool LoRDeck::add_cards(const LoRCard &card, int amount) {
 }
 
 std::string LoRDeck::encode() {
-    vector<LoRCardAndCount> single_cards;
-    vector<LoRCardAndCount> double_cards;
-    vector<LoRCardAndCount> triple_cards;
+    vector<LoRCardAndCount> single_cards, double_cards, triple_cards;
     auto filter_single = [](const LoRCardAndCount& p){return p.second == 1;};
     auto filter_double = [](const LoRCardAndCount& p){return p.second == 2;};
     auto filter_triple = [](const LoRCardAndCount& p){return p.second == 3;};
@@ -26,7 +26,7 @@ std::string LoRDeck::encode() {
 
 
     string encoded_deck;
-    writeVarint(&encoded_deck, FORMAT_VERSION);
+    writeVarint(&encoded_deck, format_version);
     encoded_deck += encode_group(triple_cards) + encode_group(double_cards) + encode_group(single_cards);
     encoded_deck = cppcodec::base32_rfc4648 ::encode(encoded_deck);
     encoded_deck.erase(remove(encoded_deck.begin(), encoded_deck.end(), '='), encoded_deck.end());
@@ -43,7 +43,8 @@ vector<LoRCard> LoRDeck::decode(const std::string& encoded_deck) {
     auto base32_decoded = (cppcodec::base32_rfc4648::decode(encoded_with_padding));
 
     auto version = getNextVarInt(&base32_decoded);
-    if (version != FORMAT_VERSION) {
+    version = version & 0xf;
+    if (version > MAX_KNOWN_VERSION) {
         cerr << "Invalid version: " << version <<  endl;
         return cards;
     }
@@ -79,7 +80,6 @@ std::vector<LoRCard> LoRDeck::decode_group(std::vector<uint8_t>* card_stream, in
 
 
 std::string LoRDeck::encode_group(const vector<LoRCardAndCount>& cards) {
-
     string group_encoded;
     vector<vector<LoRCard>> cards_by_faction;
     vector<SetFaction> set_faction_combs;
@@ -90,7 +90,6 @@ std::string LoRDeck::encode_group(const vector<LoRCardAndCount>& cards) {
 
     writeVarint(&group_encoded, set_faction_combs.size());
     for (const auto& p : set_faction_combs) {
-
         auto set            = stoi(p.first);
         auto faction_idx    = factionToInt(p.second);
         auto& faction_cards = cards_by_faction[faction_idx];
@@ -109,15 +108,19 @@ std::pair< vector<SetFaction>, vector<vector<LoRCard>> >
 LoRDeck::getProcessedGroups(const vector<LoRCardAndCount>& cards) const {
     set<string>        sets;
     set<LoRFaction>    factions;
+    vector<LoRFaction> faction_vec; // Riot API has the ordering based
     vector<SetFaction> set_faction_combs;
 
     // Get all possible set faction combos
     for (const auto& c : cards) {
         sets.insert(c.first.getSet());
-        factions.insert(c.first.getFaction());
+        if (factions.count(c.first.getFaction()) == 0) {
+            factions.insert(c.first.getFaction());
+            faction_vec.push_back(c.first.getFaction());
+        }
     }
     for (const auto& set : sets) {
-        for (const auto& faction : factions) {
+        for (const auto& faction : faction_vec) {
             set_faction_combs.emplace_back(make_pair(set, faction));
         }
     }
@@ -132,14 +135,14 @@ LoRDeck::getProcessedGroups(const vector<LoRCardAndCount>& cards) const {
         }
     }
     // Sort all combinations based on size
-    sort(set_faction_combs.begin(), set_faction_combs.end(), [&cards_by_faction](const SetFaction& lhs, const SetFaction& rhs) {
-        return cards_by_faction[factionToInt(lhs.second)].size() <= cards_by_faction[factionToInt(rhs.second)].size();
+    stable_sort(set_faction_combs.begin(), set_faction_combs.end(), [&cards_by_faction](const SetFaction& lhs, const SetFaction& rhs) {
+        return cards_by_faction[factionToInt(lhs.second)].size() < cards_by_faction[factionToInt(rhs.second)].size();
     });
 
     // Sort cards in each faction alphanumerically
     for (auto& v : cards_by_faction) {
-        sort(v.begin(), v.end(), [](const LoRCard& lhs, const LoRCard& rhs) {
-            return lhs.getFullCode() <= rhs.getFullCode();
+        stable_sort(v.begin(), v.end(), [](const LoRCard& lhs, const LoRCard& rhs) {
+            return lhs.getFullCode() < rhs.getFullCode();
         });
     }
 
@@ -154,3 +157,4 @@ std::vector<LoRCard> LoRDeck::getDeckCards() {
         cards.emplace_back(card.first);
     return cards;
 }
+

@@ -4,9 +4,8 @@
 #include <cstdint>
 
 const int FORMAT = 1;
-const int VERSION = 1;
-
-const int FORMAT_VERSION = (FORMAT << 4) | VERSION;
+const int VERSION = 2;
+const int MAX_KNOWN_VERSION = 2;
 
 #include <string>
 #include <vector>

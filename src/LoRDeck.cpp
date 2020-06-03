@@ -17,12 +17,10 @@ bool LoRDeck::add_cards(const LoRCard &card, int amount) {
 
 std::string LoRDeck::encode() {
     vector<LoRCardAndCount> single_cards, double_cards, triple_cards;
-    auto filter_single = [](const LoRCardAndCount& p){return p.second == 1;};
-    auto filter_double = [](const LoRCardAndCount& p){return p.second == 2;};
-    auto filter_triple = [](const LoRCardAndCount& p){return p.second == 3;};
-    std::copy_if(deck.begin(), deck.end(), std::back_inserter(single_cards), filter_single);
-    std::copy_if(deck.begin(), deck.end(), std::back_inserter(double_cards), filter_double);
-    std::copy_if(deck.begin(), deck.end(), std::back_inserter(triple_cards), filter_triple);
+    auto filter_n = [](const int n){return [n](const LoRCardAndCount& p){return p.second == n;};};
+    std::copy_if(deck.begin(), deck.end(), std::back_inserter(single_cards), filter_n(1));
+    std::copy_if(deck.begin(), deck.end(), std::back_inserter(double_cards), filter_n(2));
+    std::copy_if(deck.begin(), deck.end(), std::back_inserter(triple_cards), filter_n(3));
 
 
     string encoded_deck;

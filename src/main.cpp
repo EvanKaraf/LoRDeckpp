@@ -1,12 +1,13 @@
 #include <iostream>
-#include "../include/LoRCard.h"
-#include "../include/LoRDeck.h"
+#include <LoRCard.h>
+#include <LoRDeck.h>
 
 using namespace std;
 int main() {
 
     LoRDeck deck;
-    deck.add_cards({"01PZ004"}, 3);
+    LoRCard card("01PZ004");
+    deck.add_cards(card, 3);
     deck.add_cards({"01PZ009"}, 3);
     deck.add_cards({"01PZ036"}, 3);
     deck.add_cards({"01PZ052"}, 3);
@@ -20,7 +21,7 @@ int main() {
     deck.add_cards({"01IO048"}, 3);
     deck.add_cards({"01IO011"}, 2);
     deck.add_cards({"01PZ002"}, 2);
-    string encoded =  deck.encode() ;
+    string encoded =  deck.encode();
 
     auto cards = LoRDeck::decode(encoded);
 

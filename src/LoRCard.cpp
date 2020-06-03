@@ -1,4 +1,4 @@
-#include "../include/LoRCard.h"
+#include <LoRCard.h>
 
 LoRCard::LoRCard(const std::string& cardCode) : cardCode(cardCode) {
     this->set = cardCode.substr(0, 2);

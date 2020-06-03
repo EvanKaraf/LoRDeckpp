@@ -1,10 +1,8 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "cppcoreguidelines-narrowing-conversions"
 #include <algorithm>
 #include <set>
 #include <iostream>
-#include "../include/LoRDeck.h"
-#include "base32_rfc4648.hpp"
+#include <LoRDeck.h>
+#include <base32_rfc4648.hpp>
 
 using namespace std;
 

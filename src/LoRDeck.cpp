@@ -133,17 +133,19 @@ LoRDeck::getProcessedGroups(const vector<LoRCardAndCount>& cards) const {
             }
         }
     }
-
-    // Sort cards in each faction alphanumerically
-    for (auto& v : cards_by_faction) {
-        sort(v.begin(), v.end(), [](const LoRCard& lhs, const LoRCard& rhs) {
-        return lhs.getFullCode() <= rhs.getFullCode();});
-    }
-
     // Sort all combinations based on size
     sort(set_faction_combs.begin(), set_faction_combs.end(), [&cards_by_faction](const SetFaction& lhs, const SetFaction& rhs) {
         return cards_by_faction[factionToInt(lhs.second)].size() <= cards_by_faction[factionToInt(rhs.second)].size();
     });
+
+    // Sort cards in each faction alphanumerically
+    for (auto& v : cards_by_faction) {
+        sort(v.begin(), v.end(), [](const LoRCard& lhs, const LoRCard& rhs) {
+            return lhs.getFullCode() <= rhs.getFullCode();
+        });
+    }
+
+
 
     return make_pair(set_faction_combs, cards_by_faction);
 }

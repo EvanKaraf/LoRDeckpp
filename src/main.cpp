@@ -4,24 +4,25 @@
 
 using namespace std;
 int main() {
-    LoRDeck deck;
-    deck.add_cards({"01SI015"}, 3);
-    deck.add_cards({"01SI044"}, 3);
-    deck.add_cards({"01SI048"}, 3);
-    deck.add_cards({"01SI054"}, 3);
-    deck.add_cards({"01FR003"}, 3);
-    deck.add_cards({"01FR012"}, 3);
-    deck.add_cards({"01FR020"}, 3);
-    deck.add_cards({"01FR024"}, 3);
-    deck.add_cards({"01FR033"}, 3);
-    deck.add_cards({"01FR036"}, 3);
-    deck.add_cards({"01FR039"}, 3);
-    deck.add_cards({"01FR052"}, 3);
-    deck.add_cards({"01SI005"}, 2);
-    deck.add_cards({"01FR004"}, 2);
-    cout << deck.encode() << endl;
 
-    auto cards = LoRDeck::decode(deck.encode());
+    LoRDeck deck;
+    deck.add_cards({"01PZ004"}, 3);
+    deck.add_cards({"01PZ009"}, 3);
+    deck.add_cards({"01PZ036"}, 3);
+    deck.add_cards({"01PZ052"}, 3);
+    deck.add_cards({"01IO006"}, 3);
+    deck.add_cards({"01IO009"}, 3);
+    deck.add_cards({"01IO012"}, 3);
+    deck.add_cards({"01IO017"}, 3);
+    deck.add_cards({"01IO021"}, 3);
+    deck.add_cards({"01IO042"}, 3);
+    deck.add_cards({"01IO044"}, 3);
+    deck.add_cards({"01IO048"}, 3);
+    deck.add_cards({"01IO011"}, 2);
+    deck.add_cards({"01PZ002"}, 2);
+    string encoded =  deck.encode() ;
+
+    auto cards = LoRDeck::decode(encoded);
 
     for (const auto& card : cards) {
         cout << card.getFullCode() << endl;

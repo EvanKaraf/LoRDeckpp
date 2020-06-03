@@ -22,6 +22,7 @@ public:
     bool add_cards(const LoRCard &card, int amount);
     std::string encode();
     static std::vector<LoRCard> decode(const std::string& encoded_deck);
+    std::vector<LoRCard> getDeckCards();
 };
 
 

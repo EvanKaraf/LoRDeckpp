@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "cppcoreguidelines-narrowing-conversions"
 #include <algorithm>
 #include <set>
 #include <iostream>
@@ -35,7 +37,13 @@ std::string LoRDeck::encode() {
 
 vector<LoRCard> LoRDeck::decode(const std::string& encoded_deck) {
     vector<LoRCard> cards;
-    auto base32_decoded = (cppcodec::base32_rfc4648::decode(encoded_deck));
+
+    // Fix padding and decode
+    int missing_padding_len = (encoded_deck.size() / 8 + 1) * 8 - encoded_deck.size();
+    string missing_padding = string(missing_padding_len % 8, '=');
+    string encoded_with_padding = missing_padding.empty() ? encoded_deck : encoded_deck + missing_padding;
+    auto base32_decoded = (cppcodec::base32_rfc4648::decode(encoded_with_padding));
+
     auto version = getNextVarInt(&base32_decoded);
     if (version != FORMAT_VERSION) {
         cerr << "Invalid version: " << version <<  endl;
@@ -53,7 +61,7 @@ vector<LoRCard> LoRDeck::decode(const std::string& encoded_deck) {
 
     return cards;
 }
-//TODO use group amount!
+
 std::vector<LoRCard> LoRDeck::decode_group(std::vector<uint8_t>* card_stream, int group_amount) {
     vector<LoRCard> group_cards;
     int set_faction_combs = getNextVarInt(card_stream);
@@ -140,3 +148,9 @@ LoRDeck::getProcessedGroups(const vector<LoRCardAndCount>& cards) const {
     return make_pair(set_faction_combs, cards_by_faction);
 }
 
+std::vector<LoRCard> LoRDeck::getDeckCards() {
+    vector<LoRCard> cards;
+    for (const auto& card : this->deck)
+        cards.emplace_back(card.first);
+    return cards;
+}

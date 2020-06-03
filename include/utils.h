@@ -33,13 +33,14 @@ const std::vector<std::pair<std::string, LoRFaction>> mappings{{"DE", LoRFaction
 
 std::string factionToString(const LoRFaction& faction);
 
-
 LoRFaction toFaction(const std::string& s);
 
 int factionToInt(LoRFaction faction);
 
+
 int writeVarint(std::string* buffer, uint64_t value);
 
 int getNextVarInt(std::vector <uint8_t>* stream);
+
 
 #endif //LORDECK_UTILS_H

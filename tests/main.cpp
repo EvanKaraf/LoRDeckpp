@@ -8,7 +8,7 @@
 
 using namespace std;
 
-int main() {
+TEST(TestReadyDecks, ReadFromFile ) {
     vector<LoRDeck> decks;
     vector<string> codeDecks;
     string file_path = __FILE__;
@@ -34,7 +34,10 @@ int main() {
         string encoded = decks[i].encode();
         EXPECT_EQ(encoded, codeDecks[i]);
 
-//        auto decoded_deck = LoRDeck::decode(codeDecks[i]);
+        auto decoded_deck = LoRDeck::decode(codeDecks[i]);
+        auto deck_cards = decks[i].getDeckCards();
+        for (int j = 0; j < decoded_deck.size(); j++) {
+            EXPECT_EQ(decoded_deck[j].getFullCode(), deck_cards[j].getFullCode());
+        }
     }
-    return 0;
 }
